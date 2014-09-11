@@ -21,7 +21,7 @@ module Timesheet
     end
 
     def csv_headers
-      @csv_headers = csv_rows.first
+      @csv_headers = csv_rows.first.map{ |header| header.downcase.gsub(/\s/, '_').to_sym}
     end
 
     def csv_rows
