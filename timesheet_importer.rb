@@ -14,36 +14,35 @@ module Timesheet
 
     def import!
       import_data.csv_data.each do |entry|
-
+        puts "Now importing for #{entry[:date]}: #{entry[:hours]} hours for #{entry[:task]} in #{entry[:project]}"
+        submitted = client.time.create(time_entry(entry))
+        puts "Imported #{submitted}"
       end
     end
 
     def time_entry(entry)
       Harvest::TimeEntry.new(notes: entry[:notes],
-                             hours: entry[:hours], 
+                             hours: entry[:hours].to_f,
                              spent_at: entry[:date],
                              project_id: projects[entry[:project]],
                              task_id: tasks[entry[:task]])
     end
     
     def tasks
-      trackable_projects.
-        map{ |project| project["tasks"]}.
-        flatten.
-        uniq.
-        map{ |task| Hash[task["name"],task["id"]]}
+      mapped_tasks = trackable_projects.map{ |project| project["tasks"]}.flatten.uniq
+      @tasks ||= Hash[mapped_tasks.map{ |task| [task["name"],task["id"].to_i]}] 
     end
 
     def clients
-      trackable_projects.map{ |project| Hash[project["client"],project["client_id"]] }
+      @clients ||= Hash[trackable_projects.map{ |project| [project["client"],project["client_id"].to_i] }]
     end
 
     def projects
-      trackable_projects.map{ |project| Hash[project["name"],project["id"]] }
+      @projects ||= Hash[trackable_projects.map{ |project| [project["name"],project["id"].to_i] }]
     end
 
     def trackable_projects
-      client.time.trackable_projects
+      @trackable_projects ||= client.time.trackable_projects
     end
 
     def client
