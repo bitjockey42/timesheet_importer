@@ -6,16 +6,22 @@ module Timesheet
   class Importer
     Dotenv.load
 
+    attr_reader :import_data
+
+    def initialize(file_path)
+      @import_data = ImportData.new(file_path)
+    end
+
+    def import!
+      import_data.csv_data
+    end
+  end
+
+  class ImportData
     def initialize(file_path)
       @file_path = file_path
     end
 
-    def import!
-      csv_data.sort_by{ |data| data["Date"]}
-    end
-
-    protected
-    
     def csv_data
       csv_data = csv_rows.map{ |row| Hash[csv_headers.zip(row)] }
       csv_data.delete(csv_data.first)
