@@ -4,6 +4,18 @@ For some reason, you cannot, as a regular user, import CSVs of a timesheet into 
 
 So I wrote a script that takes a CSV file with the format specified below to import my time tracked for work.
 
+## Authentication
+
+This simple script uses Basic Auth (for now) and uses the dotenv gem to read `.env` files.
+
+Just create a `.env` file within this directory with these credentials:
+
+```
+HARVEST_SUBDOMAIN=subdomain that you use to login to Harvest
+HARVEST_USERNAME=the email address for login
+HARVEST_PASSWORD=your password
+```
+
 ## CSV Format
 
 The CSV must include these columns:
