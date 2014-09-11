@@ -13,7 +13,25 @@ module Timesheet
     end
 
     def import!
-      import_data.csv_data
+      import_data.csv_data.each do |entry|
+        
+      end
+    end
+    
+    def tasks
+      trackable_projects.
+        map{ |project| project["tasks"]}.
+        flatten.
+        uniq.
+        map{ |task| Hash[task["name"],task["id"]]}
+    end
+
+    def projects
+      trackable_projects.map{ |project| Hash[project["name"],project["id"]] }
+    end
+
+    def trackable_projects
+      client.time.trackable_projects
     end
 
     def client
