@@ -14,8 +14,16 @@ module Timesheet
 
     def import!
       import_data.csv_data.each do |entry|
-        
+
       end
+    end
+
+    def time_entry(entry)
+      Harvest::TimeEntry.new(notes: entry[:notes],
+                             hours: entry[:hours], 
+                             spent_at: entry[:date],
+                             project_id: projects[entry[:project]],
+                             task_id: tasks[entry[:task]])
     end
     
     def tasks
@@ -24,6 +32,10 @@ module Timesheet
         flatten.
         uniq.
         map{ |task| Hash[task["name"],task["id"]]}
+    end
+
+    def clients
+      trackable_projects.map{ |project| Hash[project["client"],project["client_id"]] }
     end
 
     def projects
