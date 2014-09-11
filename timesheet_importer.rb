@@ -15,6 +15,12 @@ module Timesheet
     def import!
       import_data.csv_data
     end
+
+    def client
+      Harvest.hardy_client(subdomain: ENV['HARVEST_SUBDOMAIN'], 
+                           username: ENV['HARVEST_USERNAME'], 
+                           password: ENV['HARVEST_PASSWORD'])
+    end
   end
 
   class ImportData
