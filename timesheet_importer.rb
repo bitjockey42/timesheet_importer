@@ -1,8 +1,10 @@
+require 'dotenv'
 require 'csv'
 require 'harvested'
 
 module Timesheet
   class Importer
+    Dotenv.load
 
     def initialize(file_path)
       @file_path = file_path

@@ -2,6 +2,9 @@ GEM
   remote: https://rubygems.org/
   specs:
     coderay (1.1.0)
+    dotenv (0.11.1)
+      dotenv-deployment (~> 0.0.2)
+    dotenv-deployment (0.0.2)
     harvested (3.1.0)
       hashie
       httparty
@@ -23,5 +26,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dotenv
   harvested
   pry
